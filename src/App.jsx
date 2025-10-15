@@ -85,11 +85,11 @@ export default function App() {
             ))}
           </ul>
         </Section>
-        <Section id="qr-code" title="Scan My Resume">
+        {/* <Section id="qr-code" title="Scan My Resume">
           <div className="flex justify-center items-center">
             <QRCodeDisplay />
           </div>
-        </Section>
+        </Section> */}
       </main>
     </div>
   );

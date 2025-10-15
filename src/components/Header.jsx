@@ -1,5 +1,7 @@
-// src/components/Header.jsx
+import { useEffect, useState, useRef } from "react";
 import { Stethoscope, Mail, MapPin, Phone, Download } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import QRCode from "qrcode";
 import HeartbeatFrame from "./HeartbeatFrame";
 import resume from "../data/resume";
 
@@ -33,6 +35,46 @@ export default function Header() {
     phonePretty = "+27 00 000 0000",
     location = "South Africa",
   } = resume?.contact || {};
+
+  const [qrCodeUrl, setQrCodeUrl] = useState("");
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const buttonRef = useRef(null);
+
+  useEffect(() => {
+    // Respect prefers-reduced-motion
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    // Generate QR code data URL
+    QRCode.toDataURL(
+      "https://anreanvari.elixflare.com/",
+      {
+        width: 200, // Smaller for popup
+        margin: 2,
+        color: {
+          dark: "#1e3a8a", // Tailwind blue-900 for medical aesthetic
+          light: "#f3f4f6", // Tailwind gray-100 for sterile background
+        },
+      },
+      (error, url) => {
+        if (error) console.error("QR Code generation failed:", error);
+        else setQrCodeUrl(url);
+      }
+    );
+  }, []);
+
+  // Handle QR code download
+  const handleQRDownload = () => {
+    if (qrCodeUrl) {
+      const link = document.createElement("a");
+      link.href = qrCodeUrl;
+      link.download = "anre-anvari-resume-qr.png";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
 
   return (
     <header className="relative z-20 mx-auto max-w-5xl px-4 pt-8">
@@ -109,7 +151,7 @@ export default function Header() {
                 {location}
               </a>
 
-              {/* Download PDF — auto from /src/assets/resume/* */}
+              {/* Download PDF */}
               <a
                 href={pdfUrl}
                 download={pdfName}
@@ -120,6 +162,43 @@ export default function Header() {
                   Download PDF
                 </span>
               </a>
+
+              {/* Download QR Code with Popup */}
+              <div
+                className="relative"
+                onMouseEnter={() => setIsPopupOpen(true)}
+                onMouseLeave={() => setIsPopupOpen(false)}>
+                <button
+                  onClick={handleQRDownload}
+                  className="group/qr inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-400/10 ring-1 ring-emerald-300/30 hover:bg-emerald-400/20 transition disabled:opacity-50"
+                  aria-label="Download QR code for digital resume"
+                  disabled={!qrCodeUrl}>
+                  <Download className="h-4 w-4 group-hover/qr:animate-[dlBounce_1s_ease-in-out]" />
+                  <span className="group-hover/qr:animate-[dlFlash_1.1s_ease-in-out]">
+                    Download QR Code
+                  </span>
+                </button>
+                <AnimatePresence>
+                  {isPopupOpen && qrCodeUrl && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-slate-800/90 rounded-lg shadow-lg p-4 z-50 border border-emerald-300/30">
+                      <img
+                        src={qrCodeUrl}
+                        alt="QR Code for Digital Resume"
+                        className="max-w-full h-auto"
+                        style={{ maxWidth: "200px" }}
+                      />
+                      <p className="text-center text-sm text-slate-300/80 mt-2">
+                        Scan to visit my digital resume
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
           </div>
         </div>
