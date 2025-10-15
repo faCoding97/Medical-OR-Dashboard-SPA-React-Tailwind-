@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Section from "./components/Section";
 import resume from "./data/resume";
 import BackToTop from "./components/BackToTop";
+import QRCodeDisplay from "./QRCodeDisplay";
 
 export default function App() {
   return (
@@ -83,6 +84,11 @@ export default function App() {
               </li>
             ))}
           </ul>
+        </Section>
+        <Section id="qr-code" title="Scan My Resume">
+          <div className="flex justify-center items-center">
+            <QRCodeDisplay />
+          </div>
         </Section>
       </main>
     </div>
