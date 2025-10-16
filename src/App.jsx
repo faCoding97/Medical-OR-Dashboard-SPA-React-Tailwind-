@@ -90,18 +90,19 @@ export default function App() {
             <QRCodeDisplay />
           </div>
         </Section> */}
-
-        {/* لینک LinkedIn */}
-        <div className="flex justify-center items-center">
-          <p className="text-slate-300/80">
-            Written by:{" "}
+        <div className="relative z-10 mx-auto max-w-5xl px-4 py-6">
+          <div className="flex items-center justify-center flex-wrap gap-2 text-center">
+            <span className="text-slate-300/80 whitespace-nowrap">
+              Written by:
+            </span>
             <a
+              className="inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r   text-white font-medium rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl whitespace-nowrap text-sm sm:text-base"
               href="https://www.linkedin.com/in/farazaghababayi"
               target="_blank"
               rel="noopener noreferrer">
               www.linkedin.com/in/farazaghababayi
             </a>
-          </p>
+          </div>
         </div>
       </main>
     </div>
