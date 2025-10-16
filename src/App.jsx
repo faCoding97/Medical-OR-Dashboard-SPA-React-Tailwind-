@@ -90,6 +90,19 @@ export default function App() {
             <QRCodeDisplay />
           </div>
         </Section> */}
+
+        {/* لینک LinkedIn */}
+        <div className="flex justify-center items-center">
+          <p className="text-slate-300/80">
+            Written by:{" "}
+            <a
+              href="https://www.linkedin.com/in/farazaghababayi"
+              target="_blank"
+              rel="noopener noreferrer">
+              www.linkedin.com/in/farazaghababayi
+            </a>
+          </p>
+        </div>
       </main>
     </div>
   );
